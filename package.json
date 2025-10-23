@@ -1,0 +1,17 @@
+{
+  "name": "nodejs-api-practice",
+  "version": "1.0.0",
+  "description": "This is vanila nodejs project ",
+  "license": "ISC",
+  "author": "Khervin",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
+  },
+  "dependencies": {
+    "dotenv": "^17.2.3",
+    "nodemon": "^3.1.10"
+  }
+}
