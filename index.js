@@ -1,6 +1,7 @@
 import http from 'node:http'
 import { getDataFromDb } from './db.js'
 import { ResponseJSON } from './utils/schema.js'
+import { filtereddData } from './utils/filteredData.js'
  
 const PORT = process.env.PORT | 8080
 
@@ -14,13 +15,18 @@ const server = http.createServer( async (req,res) => {
         
     }else if(req.url.startsWith('/api/continent') && req.method === 'GET'){
 
-        const continent = req.url.split('/').pop()
-        const filteredData = destinations.filter((destination) => {
-            return destination.continent.toLowerCase() === continent.toLowerCase()
-        })
+        //extracting the last query param on url
+        const continent = req.url.split('/').pop()           
+        const filteredData = filtereddData(destinations, "continent", continent)
        
         ResponseJSON(res, 200, filteredData)
 
+    }else if(req.url.startsWith('/api/country') && req.method === 'GET'){
+
+        const country = req.url.split('/').pop()
+        const filteredData = filtereddData(destinations, "country",  country)
+
+        ResponseJSON(res, 200, filteredData)
     }else{
 
         res.statusCode = 404
