@@ -1,9 +1,9 @@
 import http from 'node:http'
 import { getDataFromDb } from './db.js'
 import { ResponseJSON } from './utils/schema.js'
-import { filtereddData } from './utils/filteredData.js'
+import { getRequest } from './methods/get-request.js'
 import { URL } from 'node:url'
-import { queryParams } from './utils/queryParams.js'
+
  
 const PORT = process.env.PORT | 8080
 
@@ -11,13 +11,9 @@ const server = http.createServer( async (req,res) => {
 
     const destinations = await getDataFromDb()
 
-    //capturing query parameters 
-    const urlObj = new URL(req.url, `http://${req.headers.host}`)
-    const queryObj = Object.fromEntries(urlObj.searchParams)
-
     switch(req.method){
         case "GET":
-            getRequest(req, res)
+            getRequest(req, res, destinations)
             break
         case "POST":
             postRequest(req, res)
