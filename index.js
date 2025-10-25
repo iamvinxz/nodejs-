@@ -2,9 +2,7 @@ import http from 'node:http'
 import { getDataFromDb } from './db.js'
 import { ResponseJSON } from './utils/schema.js'
 import { getRequest } from './methods/get-request.js'
-import { URL } from 'node:url'
 
- 
 const PORT = process.env.PORT | 8080
 
 const server = http.createServer( async (req,res) => {

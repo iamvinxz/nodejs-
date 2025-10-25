@@ -9,7 +9,7 @@ export const queryParams = (query, data) => {
     }
     
     if (country){
-        data = data.filter(() => 
+        data = data.filter((destination) => 
             destination.country.toLowerCase() === country.toLowerCase()
         )
     }

@@ -4,8 +4,6 @@ import { ResponseJSON } from '../utils/schema.js'
 
 export const getRequest = (req, res, data) => {
 
-    const destinations = data
-
     //capturing query parameters 
     const urlObj = new URL(req.url, `http://${req.headers.host}`)
     const queryObj = Object.fromEntries(urlObj.searchParams)
@@ -13,7 +11,7 @@ export const getRequest = (req, res, data) => {
     //using .pathname to set dynamic /api or /api with query parameters
     if(urlObj.pathname === '/api' && req.method === 'GET'){
 
-        let filteredDestination = queryParams(queryObj, destinations)
+        let filteredDestination = queryParams(queryObj, data)
 
         //fetching data based on query parameters
         ResponseJSON(res, 200, filteredDestination)
@@ -24,7 +22,7 @@ export const getRequest = (req, res, data) => {
         const continent = req.url.split('/').pop()   
         
         //filtering data based on its locationType 
-        const filteredData = filtereddData(destinations, "continent", continent)
+        const filteredData = filtereddData(data, "continent", continent)
        
         ResponseJSON(res, 200, filteredData)
 
@@ -34,7 +32,7 @@ export const getRequest = (req, res, data) => {
         const country = req.url.split('/').pop()
 
         //filtering data based on its locationType 
-        const filteredData = filtereddData(destinations, "country",  country)
+        const filteredData = filtereddData(data, "country",  country)
 
         ResponseJSON(res, 200, filteredData)
     }else{
