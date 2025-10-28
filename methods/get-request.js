@@ -29,15 +29,20 @@ export const getRequest = (req, res, data) => {
     }else if(req.url.startsWith('/api/destination') && regex.test(uuidParam)){
 
         let filteredData = filteredUUID(data, uuidParam)
-        ResponseJSON(res, 200, filteredData)
         
+        //checking if the uuid is existing in db
+        if(filteredData > 0){
+            ResponseJSON(res, 200, filteredData)
+        }
+
+        ResponseJSON(res, 404, {error: "Not Found", message: "The destination you are looking is not found"})
+
     }else if(!regex.test(uuidParam)){
         res.setHeader("Content-Type", "application/json")
             ResponseJSON(res, 400, ({
                 error: "Validation failed", 
                 message: "You have an invalid UUID!"
         }))
-
     }else if(req.url.startsWith('/api/continent') && req.method === 'GET'){
 
         //extracting the last query param on url
@@ -60,7 +65,7 @@ export const getRequest = (req, res, data) => {
     }else{
         res.setHeader("Content-Type", "application/json")
             ResponseJSON(res, 404, ({
-                error: "not found", 
+                error: "Not Found", 
                 message: "The request route does not exist!"
         }))
         
