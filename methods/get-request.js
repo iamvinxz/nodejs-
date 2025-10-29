@@ -1,3 +1,4 @@
+import { dataChecker } from '../utils/data-checker.js'
 import { filtereddData } from '../utils/filteredData.js'
 import { filteredUUID } from '../utils/filteredUUID.js'
 import { queryParams } from '../utils/queryParams.js'
@@ -5,9 +6,8 @@ import { ResponseJSON } from '../utils/schema.js'
 
 export const getRequest = (req, res, data) => {
 
-   
     const baseURL = new URL(req.url, `http://${req.headers.host}`)
-    console.log(baseURL)
+    console.log(baseURL.pathname)
 
     //capturing query parameters 
     const queryObj = Object.fromEntries(baseURL.searchParams)
@@ -26,23 +26,6 @@ export const getRequest = (req, res, data) => {
         //fetching data based on query parameters
         ResponseJSON(res, 200, filteredDestination)
         
-    }else if(req.url.startsWith('/api/destination') && regex.test(uuidParam)){
-
-        let filteredData = filteredUUID(data, uuidParam)
-        
-        //checking if the uuid is existing in db
-        if(filteredData > 0){
-            ResponseJSON(res, 200, filteredData)
-        }
-
-        ResponseJSON(res, 404, {error: "Not Found", message: "The destination you are looking is not found"})
-
-    }else if(!regex.test(uuidParam)){
-        res.setHeader("Content-Type", "application/json")
-            ResponseJSON(res, 400, ({
-                error: "Validation failed", 
-                message: "You have an invalid UUID!"
-        }))
     }else if(req.url.startsWith('/api/continent') && req.method === 'GET'){
 
         //extracting the last query param on url
@@ -50,7 +33,9 @@ export const getRequest = (req, res, data) => {
         
         //filtering data based on its locationType 
         let filteredData = filtereddData(data, "continent", continent)
-       
+        if(dataChecker(res,filteredData)){
+            return
+        }
         ResponseJSON(res, 200, filteredData)
 
     }else if(req.url.startsWith('/api/country') && req.method === 'GET'){
@@ -60,8 +45,32 @@ export const getRequest = (req, res, data) => {
 
         //filtering data based on its locationType 
         let filteredData = filtereddData(data, "country",  country)
+        if(dataChecker(res,filteredData)){
+            return
+        }
+        ResponseJSON(res, 200, filteredData)
+        
+    }else if(req.url.startsWith('/api/destination') && regex.test(uuidParam)){
+
+        let filteredData = filteredUUID(data, uuidParam)
+        console.log(filteredData.length)
+       
+        //checking if the uuid is existing in db
+        if(dataChecker(res,filteredData)){
+            return
+        }
 
         ResponseJSON(res, 200, filteredData)
+        
+
+        // ResponseJSON(res, 404, {error: "Not Found", message: "The destination you are looking is not found"})
+
+    }else if(!regex.test(uuidParam)){
+        res.setHeader("Content-Type", "application/json")
+            ResponseJSON(res, 400, ({
+                error: "Validation failed", 
+                message: "You have an invalid UUID!"
+        }))
     }else{
         res.setHeader("Content-Type", "application/json")
             ResponseJSON(res, 404, ({
