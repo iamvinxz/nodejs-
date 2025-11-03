@@ -1,5 +1,4 @@
 export const bodyParser = async (request) => {
-
     return new Promise((resolve, reject) => {
         try{
             let body = ""
@@ -9,7 +8,7 @@ export const bodyParser = async (request) => {
             })
 
             request.on("end", () => {
-                resolve(JSON.parse(body))
+                resolve(JSON.parse(body)) //returns js object   
             })
 
         }catch(error){

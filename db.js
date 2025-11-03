@@ -1,5 +1,4 @@
-import { data } from './data.js'
-
+import data from './data.json' with { type: 'json' }
 export async function getDataFromDb(){
     return data
 }
