@@ -1,5 +1,7 @@
 import crypto from "crypto"
 import { bodyParser } from "../utils/body-parser.js"
+import { writeToFile } from "../utils/write-to-file.js"
+import { ResponseJSON } from "../utils/schema.js"
 
 export const postRequest = async (req, res, data) => {
     if(req.url === '/api/destination/'){
@@ -7,6 +9,7 @@ export const postRequest = async (req, res, data) => {
             let body = await bodyParser(req)
             body.uuid = crypto.randomUUID()
             data.push(body)
+            writeToFile(data)
             res.writeHeader(201, {"Content-Type":"application/json"})
             res.end()
             console.log("Req body: ", body)
@@ -18,5 +21,11 @@ export const postRequest = async (req, res, data) => {
                 message: "Request body is not valid"
             }))
         }
+    }else{
+        res.setHeader("Content-Type", "application/json")
+            ResponseJSON(res, 404, ({
+                error: "Not Found", 
+                message: "The request route does not exist!"
+        }))
     }
 }
