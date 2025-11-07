@@ -11,7 +11,7 @@ export const postRequest = async (req, res, data) => {
             data.push(body)
             writeToFile(data)
             res.writeHeader(201, {"Content-Type":"application/json"})
-            res.end()
+            res.end(JSON.stringify(data))
             console.log("Req body: ", body)
         }catch(error){
             console.log(error)

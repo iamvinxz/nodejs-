@@ -7,7 +7,6 @@ import { ResponseJSON } from '../utils/schema.js'
 export const getRequest = (req, res, data) => {
 
     const baseURL = new URL(req.url, `http://${req.headers.host}`)
-    console.log(baseURL.pathname)
 
     //capturing query parameters 
     const queryObj = Object.fromEntries(baseURL.searchParams)

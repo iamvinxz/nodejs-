@@ -3,6 +3,7 @@ import { getDataFromDb } from './db.js'
 import { ResponseJSON } from './utils/schema.js'
 import { getRequest } from './methods/get-request.js'
 import { postRequest } from './methods/post-request.js'
+import { deleteRequest } from './methods/delete-request.js'
 
 const PORT = process.env.PORT | 8080
 
@@ -21,7 +22,7 @@ const server = http.createServer( async (req,res) => {
             putRequest(req, res)
             break
         case "DELETE":
-            deleteRequest(req, res)
+            deleteRequest(req, res, destinations)
             break
         default: 
             res.setHeader("Content-Type", "application/json")
