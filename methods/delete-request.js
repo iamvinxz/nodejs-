@@ -1,3 +1,4 @@
+import { dataChecker } from "../utils/data-checker.js"
 import { writeToFile } from "../utils/write-to-file.js"
 
 export const deleteRequest = (req, res, data) => {

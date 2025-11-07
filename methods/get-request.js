@@ -60,7 +60,6 @@ export const getRequest = (req, res, data) => {
         }
 
         ResponseJSON(res, 200, filteredData)
-        
 
         // ResponseJSON(res, 404, {error: "Not Found", message: "The destination you are looking is not found"})
 
